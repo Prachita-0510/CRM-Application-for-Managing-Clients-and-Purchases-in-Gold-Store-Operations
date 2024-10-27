@@ -1,0 +1,18 @@
+trigger ProductTrigger on Product__c (before update) {
+
+    for (Product__c product : Trigger.new) {
+        
+        // Ensure that Stock Level does not fall below 0
+        if (product.Stock_Level__c < 0) {
+            product.addError('Stock level cannot be negative.');
+        }
+        
+        // Check if stock level has changed
+        Product__c oldProduct = Trigger.oldMap.get(product.Id);
+        
+        if (product.Stock_Level__c != oldProduct.Stock_Level__c) {
+            // Log stock changes or take necessary actions when stock is updated
+            System.debug('Stock level for ' + product.Name + ' changed from ' + oldProduct.Stock_Level__c + ' to ' + product.Stock_Level__c);
+        }
+    }
+}
