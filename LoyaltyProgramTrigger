@@ -1,0 +1,14 @@
+trigger LoyaltyProgramTrigger on Loyalty_Program__c (before update) {
+
+    for (Loyalty_Program__c program : Trigger.new) {
+        
+        // Update Tier Level based on Loyalty Points
+        if (program.Points_Earned__c >= 1000) {
+            program.Tier_Level__c = 'Gold';
+        } else if (program.Points_Earned__c >= 500) {
+            program.Tier_Level__c = 'Silver';
+        } else {
+            program.Tier_Level__c = 'Bronze';
+        }
+    }
+}
